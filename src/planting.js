@@ -199,10 +199,10 @@
                         left: containerOffset.left + pe.plantedobjects[i].position.x * pe.width,
                         top: containerOffset.top + pe.height / 2 + pe.plantedobjects[i].position.y * pe.width
                     });
-				div.append(img);
-				pe.overlay.append(div);
-				pe.plantedobjects[i].img = img;
-				pe.plantedobjects[i].container = div;
+                div.append(img);
+                pe.overlay.append(div);
+                pe.plantedobjects[i].img = img;
+                pe.plantedobjects[i].container = div;
             }
         }
     }
