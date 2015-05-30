@@ -173,7 +173,7 @@ Planting.prototype.rotate_object = function (e) {
 
   function finishRotation (e) {
     var plantedObjectContainer = plantedObject.container;
-    if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) { console.log(54453);
+    if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
       $(document).off('mousemove', rotateOnMove);
       $(document).off('mouseup', finishRotation);
       plantedObject.projection = projection;
@@ -192,7 +192,7 @@ Planting.prototype.resize_object = function (e) {
   $('body').addClass('noselect resize');
   var plantedObject = e.data.plantedObject,
     scale = plantedObject.scale || 1,
-    cssscale;
+    cssScale;
   plantedObject.container.addClass('plantingjs-active-object');
   console.log(plantedObject.scale);
 
@@ -204,21 +204,21 @@ Planting.prototype.resize_object = function (e) {
         var buttonCursorDistance = buttonX - e.pageX;
         //console.log(buttonCursorDistance,  3333333)
         if (buttonCursorDistance === 0) {
-          cssscale = scale;
+          cssScale = scale;
         } else if (buttonCursorDistance < 0) {
-          cssscale = scale - Math.abs(buttonCursorDistance/100);
+          cssScale = scale - Math.abs(buttonCursorDistance/100);
         } else if (buttonCursorDistance > 0) {
-          cssscale = scale + buttonCursorDistance/100;
+          cssScale = scale + buttonCursorDistance/100;
         }
 
-        if (cssscale > 0.2)
-          plantedObject.img = plantedObject.img.css('transform', 'scale(' + cssscale + ')');
+        if (cssScale > 0.2)
+          plantedObject.img = plantedObject.img.css('transform', 'scale(' + cssScale + ')');
       }
     },
     finishResizing = function (e) {
       var plantedObjectContainer = plantedObject.container;
       if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
-        plantedObject.scale = cssscale; console.log(plantedObject.scale)
+        plantedObject.scale = cssScale;
         $('body').removeClass('noselect resize');
         plantedObjectContainer.removeClass('plantingjs-active-object');
         $(document).off('mousemove', resizeOnDrag);
