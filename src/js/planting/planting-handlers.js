@@ -21,7 +21,6 @@ Planting.prototype.start_planting = function () {
             addressControl: false,
             linksControl: false
         });
-
     };
 };
 
@@ -203,7 +202,7 @@ Planting.prototype.resize_object = function (e) {
         if (!EVENT_MOUSEDOWN) return;
         if (plantedObject.container.hasClass('plantingjs-active-object')) {
             var buttonCursorDistance = buttonX - e.pageX;
-            //console.log(buttonCursorDistance,  3333333)
+
             if (buttonCursorDistance === 0) {
                 cssScale = scale;
             } else if (buttonCursorDistance < 0) {
