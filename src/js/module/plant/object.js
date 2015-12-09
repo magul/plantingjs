@@ -49,7 +49,7 @@ const PlantViewObject = View.extend({
       .attr('data-cid', this.model.cid)
       .css({
         left: this.overlay.width() * this.model.get('x'),
-        top: this.overlay.height() / 2 + this.model.get('y') * this.overlay.width(),
+        top: this.overlay.height() * 2 * this.model.get('y') * this.overlay.width(),
         zIndex: this.model.get('layerIndex'),
       });
 
