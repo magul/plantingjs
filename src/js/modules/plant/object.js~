@@ -34,7 +34,7 @@ export default View.extend({
     });
 
     this.$el.draggable({
-      cancel: '.icon-trash',
+      cancel: /* '.icon-loop, .icon-trash, .icon-resize' */ '.icon-trash',
     });
     this.model
       .on('change:currentProjection', this.updateProjection, this)
