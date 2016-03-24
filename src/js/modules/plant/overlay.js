@@ -6,7 +6,7 @@ import Const from '../../const';
 
 export default View.extend({
   events: {
-    'drop': 'plantObject',
+    'drop': 'plantObject'
   },
   _width: null,
   _height: null,
