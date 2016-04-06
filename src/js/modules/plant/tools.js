@@ -26,7 +26,7 @@ export default View.extend({
   },
 
   render: function render() {
-    this.$el.html(this.template());
+    this.$el.html(this.template({ options: this.options }));
   },
 
   removeObject: function removeObject() {

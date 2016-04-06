@@ -12,6 +12,7 @@ import MapView from './modules/map/map';
 import LayersManagerView from './modules/layers-manager/menu-view';
 import ModalView from './modules/components/modal';
 
+
 export default class extends EventEmitter {
   constructor(options) {
     const initDefer = deferredObject();
@@ -124,11 +125,13 @@ export default class extends EventEmitter {
       });
   }
 
-  initStreetview({ lat, lng, heading, pitch, zoom }) {
+  initStreetview({ lat, lng, heading, pitch, zoom, options }) {
     const panoOptions = {
       position: { lat, lng },
       pov: { heading, pitch, zoom },
     };
+
+    this.data.options = Object.assign({}, Const.DefaultSettings, options || {});
 
     this.initDefer
       .then(() => {
