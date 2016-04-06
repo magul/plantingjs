@@ -30,6 +30,8 @@ export default class extends EventEmitter {
         app: this,
       }),
     };
+    this.data.options = Object.assign(
+      {}, Const.DefaultSettings, options.options || {});
     this.setState(Const.State.INITING);
     this.manifesto()
         .fetch()

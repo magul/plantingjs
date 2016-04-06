@@ -16,13 +16,13 @@ export default View.extend({
     'mousedown .icon-loop': 'rotateObject',
   },
 
-  initialize: function initialize(opts) {
-    this.render();
-    this.parentView = opts.parent;
+  initialize: function initialize({ parent, options }) {
+    this.parentView = parent;
+    this.options = options;
     this.model
-      .on('change:userActivity', function(model, userActivity) {
-        this.$el.toggleClass('user-active', userActivity);
-      }, this);
+      .on('change:userActivity', (model, userActivity) =>
+        this.$el.toggleClass('user-active', userActivity));
+    this.render();
   },
 
   render: function render() {
