@@ -81,11 +81,13 @@ export default class extends EventEmitter {
       model: this.manifesto(),
       app: this,
     });
-    this.layersManager = new LayersManagerView({
-      $parent: this.main.$proxy,
-      collection: this.session().objects(),
-      app: this,
-    });
+    if (this.data.options.LAYERABILITY) {
+      this.layersManager = new LayersManagerView({
+        $parent: this.main.$proxy,
+        collection: this.session().objects(),
+        app: this,
+      });
+    }
   }
 
   initPlant(objects) {
