@@ -19,7 +19,7 @@
 				{}
 			],
 			"properties": {
-				"order": 798,
+				"order": 4,
 				"id": 1,
 				"prevSize": 16,
 				"code": 58882,
@@ -47,7 +47,7 @@
 				{}
 			],
 			"properties": {
-				"order": 533,
+				"order": 1,
 				"id": 0,
 				"prevSize": 16,
 				"code": 58880,
@@ -85,7 +85,7 @@
 				{}
 			],
 			"properties": {
-				"order": 534,
+				"order": 2,
 				"id": 0,
 				"prevSize": 16,
 				"code": 58881,
@@ -94,32 +94,6 @@
 			"setIdx": 0,
 			"setId": 1,
 			"iconIdx": 2
-		},
-		{
-			"icon": {
-				"paths": [
-					"M106 86h812c6 0 10 2 14 6s6 8 6 14v128c0 6-2 12-6 16s-8 6-14 6h-812c-6 0-10-2-14-6s-6-10-6-16v-128c0-6 2-10 6-14s8-6 14-6zM106 426h812c6 0 10 2 14 8 4 4 6 8 6 14v128c0 6-2 10-6 14-4 6-8 8-14 8h-812c-6 0-10-2-14-8-4-4-6-8-6-14v-128c0-6 2-10 6-14 4-6 8-8 14-8zM106 768h812c6 0 10 2 14 6s6 10 6 16v128c0 6-2 10-6 14s-8 6-14 6h-812c-6 0-10-2-14-6s-6-8-6-14v-128c0-6 2-12 6-16s8-6 14-6z"
-				],
-				"attrs": [
-					{}
-				],
-				"isMulticolor": false,
-				"defaultCode": 57482,
-				"grid": 12
-			},
-			"attrs": [
-				{}
-			],
-			"properties": {
-				"id": 232,
-				"order": 771,
-				"prevSize": 12,
-				"code": 59116,
-				"name": "menu-hamburger"
-			},
-			"setIdx": 0,
-			"setId": 1,
-			"iconIdx": 239
 		}
 	],
 	"height": 1024,
