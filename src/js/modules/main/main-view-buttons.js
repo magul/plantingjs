@@ -7,9 +7,7 @@ function createButton(label, eventHash, eventContext) {
     label });
 
   for (const event in eventHash) {
-    if (!eventHash[event].hasOwnProperty()) {
-      instance.on(event, eventHash[event], eventContext);
-    }
+    instance.on(event, eventHash[event], eventContext);
   }
 
   return instance;

@@ -5,10 +5,10 @@ import sinon from 'sinon';
 import Main from '../src/js/modules/main/main';
 
 describe('Main view', () => {
-  let instance = null;
+  let instance;
   let events = {};
   let app = {};
-  let sessionSave = null;
+  let sessionSave;
 
   function eventsMock(namespace) {
     const api = {
@@ -36,6 +36,7 @@ describe('Main view', () => {
       options: {
         selectPanoMode: true,
       },
+      getState: () => {},
       data: {
         session: session(),
       },
@@ -58,21 +59,38 @@ describe('Main view', () => {
   afterEach(cleanup);
 
   it('Should render base DOM elements', () => {
-    const find = (selector) => instance.$el.find(selector).length;
+    const count = (selector) => instance.$el.find(selector).length;
 
-    equal(find('.layers-menu'), 1);
-    equal(find('.plantingjs-toolbox'), 1);
-    equal(find('.plantingjs-overlay'), 1);
-    equal(find('.plantingjs-google'), 1);
-    equal(find('.plantingjs-modal'), 1);
+    instance.render();
+    equal(count('.layers-menu'), 1);
+    equal(count('.plantingjs-toolbox'), 1);
+    equal(count('.plantingjs-overlay'), 1);
+    equal(count('.plantingjs-google'), 1);
+    equal(count('.plantingjs-modal'), 1);
   });
 
-  it('Should call session.save whenever user clicked save button', () => {
-    instance.submit.el.click();
-    equal(sessionSave.called, true);
+  it('Should update start button on visibility change', () => {
+    instance.start.model.set = sinon.spy();
+    events.app.visible_changed(true);
+    equal(instance.start.model.set.calledWith({ visible: true }), true);
   });
 
-  it('Should return modal DOM element - #getModal', () => {
-    equal(instance.getModal().hasClass('plantingjs-modal'), true);
+  it('Should add class to the container when user starts planting', () => {
+    events.app.start_planting();
+    equal(instance.el.classList.contains('plantingjs-is-planting'), true);
+  });
+
+  describe('Submit button', () => {
+    it('Should call session.save whenever user clicked button', () => {
+      instance.submit.el.click();
+      equal(sessionSave.called, true);
+    });
+  });
+
+  describe('#getModal', () => {
+    it('Should return modal DOM element', () => {
+      instance.render();
+      equal(instance.getModal().hasClass('plantingjs-modal'), true);
+    });
   });
 });

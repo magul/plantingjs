@@ -7,9 +7,6 @@ import { isFunction } from 'lodash';
 const IS_PLANTING_CLASS = 'plantingjs-is-planting';
 const MODAL_CLASS = 'plantingjs-modal';
 
-/**
- * @private
- */
 function handleSelectPano() {
   const { onSelectPano } = this.app.options;
   const panoData = this.manifesto()
@@ -47,19 +44,20 @@ function handleStateChange(state) {
   this.$el.children().attr('data-state', state);
 }
 
-/**
- * @public
- */
+function handleSubmit(event) {
+  /**
+   * @todo
+   * Show submit popup. For now just save session.
+   */
+  event.preventDefault();
+  this.session().save();
+}
+
 export default View.extend({
-  toolbox: null,
-  map: null,
-  className: 'plantingjs-container',
-  $proxy: null,
+  className: 'plantingjs-proxy',
 
   initialize() {
-    this.render();
-    this.$proxy = this.$el.children();
-    this.submit = submitButton({ click: this.onClickSubmit }, this);
+    this.submit = submitButton({ click: handleSubmit }, this);
     this.session()
         .objects()
         .on('add remove', handlePlantedObjectsChanged, this);
@@ -70,7 +68,6 @@ export default View.extend({
       this.start = initButton({ click: handleInitPlanting }, this);
     }
 
-    this.$proxy.append(this.submit.$el, this.start.$el);
     this.app
         .on(Const.Event.VISIBLE_CHANGED, handleMapVisibleChange, this)
         .on(Const.Event.START_PLANTING, handleStartPlanting, this)
@@ -78,16 +75,12 @@ export default View.extend({
   },
 
   render() {
-    this.$el.html(template());
-  },
+    this.$el
+        .html(template())
+        .children()
+        .append(this.submit.$el, this.start.$el);
 
-  onClickSubmit(event) {
-    /**
-     * @todo
-     * Show submit popup. For now just save session.
-     */
-    event.preventDefault();
-    this.session().save();
+    return this;
   },
 
   getModal() {
