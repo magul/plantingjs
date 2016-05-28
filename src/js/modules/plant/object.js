@@ -4,7 +4,7 @@ import PlantViewTools from '../plant/tools';
 import Const from '../../const';
 import moveableMixin, { MOVE_END } from '../components/moveable-mixin';
 
-export default View.extend({
+const ObjectView = View.extend({
   className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',
   template: require('./object.hbs'),
   events: {
@@ -37,7 +37,7 @@ export default View.extend({
       .on('change:layerIndex', this.setLayer, this);
 
     if (this.app.getState() !== Const.State.VIEWER) {
-      moveableMixin(this);
+      this.moveableElement();
       this.on(MOVE_END, this.model.set, this.model);
     }
   },
@@ -81,3 +81,7 @@ export default View.extend({
     this.model.set('userActivity', false);
   },
 });
+
+lodash.extend(ObjectView.prototype, moveableMixin());
+
+export default ObjectView;
