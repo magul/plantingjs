@@ -2,18 +2,15 @@ import lodash from 'lodash';
 import { View } from '../../core';
 import PlantViewTools from '../plant/tools';
 import Const from '../../const';
+import moveableMixin, { MOVE_END } from '../components/moveable-mixin';
 
 export default View.extend({
   className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',
   template: require('./object.hbs'),
-
   events: {
-    'dragstart': 'dragstart',
-    'dragstop': 'saveCoords',
     'mouseover': 'setUserActivity',
     'mouseleave': 'unsetUserActivity',
   },
-
   $img: null,
 
   initialize: function(options) {
@@ -35,12 +32,14 @@ export default View.extend({
       options: this.app.data.options,
     });
 
-    this.$el.draggable({
-      cancel: '.icon-loop, .icon-trash, .icon-resize',
-    });
     this.model
       .on('change:currentProjection', this.updateProjection, this)
       .on('change:layerIndex', this.setLayer, this);
+
+    if (this.app.getState() !== Const.State.VIEWER) {
+      moveableMixin(this);
+      this.on(MOVE_END, this.model.set, this.model);
+    }
   },
 
   render: function() {
@@ -74,26 +73,11 @@ export default View.extend({
     this.$img.attr('src', model.getProjection());
   },
 
-  saveCoords: function(ev, ui) {
-    this.model.set({
-      x: ui.position.left,
-      y: ui.position.top,
-    });
-
-    return this;
-  },
-
   setUserActivity: function() {
     this.model.set('userActivity', true);
   },
 
   unsetUserActivity: function() {
     this.model.set('userActivity', false);
-  },
-
-  dragstart: function(ev) {
-    if (this.app.getState() === Const.State.VIEWER) {
-      ev.preventDefault();
-    }
   },
 });
