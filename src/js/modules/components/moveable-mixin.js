@@ -7,13 +7,6 @@ function moveableMixin() {
   let element;
   const offset = {};
   const position = { x: 0, y: 0 };
-  const prepare = (cx, cy) => {
-    const { left, top } = element.getBoundingClientRect();
-
-    offset.x = cx - left;
-    offset.y = cy - top;
-    element.style.willChange = 'transform';
-  };
 
   return {
     moveableElement() {
