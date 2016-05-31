@@ -12,6 +12,10 @@ describe('Moveable mixin', () => {
 
   function preparation() {
     instance = new ViewClass();
+    instance.el.getBoundingClientRect = () => ({
+      left: 50,
+      top: 50,
+    });
   }
 
   function cleanup() {
@@ -42,8 +46,6 @@ describe('Moveable mixin', () => {
 
       instance.moveableElement();
       instance.on('moveend', spy);
-      instance.el.offsetLeft = 50;
-      instance.el.offsetTop = 50;
       instance.el.dispatchEvent(createMouseEvent({ type: 'mousedown' }));
       instance.el.dispatchEvent(createMouseEvent({
         type: 'mousemove',

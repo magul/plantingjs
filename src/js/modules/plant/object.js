@@ -43,15 +43,17 @@ const ObjectView = View.extend({
   },
 
   render: function() {
+    const x = this.overlay.width() * this.model.get('x');
+    const y = this.overlay.height() / 2 + this.model.get('y') * this.overlay.width();
+
     this.$el
       .html(this.template({
         projectionUrl: this.model.getProjection(),
       }))
       .attr('data-cid', this.model.cid)
       .css({
-        left: this.overlay.width() * this.model.get('x'),
-        top: this.overlay.height() / 2 + this.model.get('y') * this.overlay.width(),
         zIndex: this.model.get('layerIndex'),
+        transform: `translate3d(${x}px, ${y}px, 0)`,
       });
 
     this.$img = this.$el.children('img');

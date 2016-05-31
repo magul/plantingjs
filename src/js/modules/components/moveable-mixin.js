@@ -4,9 +4,16 @@ const PREVENT_SELECT_CLASS = 'noselect';
 
 function moveableMixin() {
   let isDragging = false;
+  let element;
   const offset = {};
   const position = { x: 0, y: 0 };
-  let element;
+  const prepare = (cx, cy) => {
+    const { left, top } = element.getBoundingClientRect();
+
+    offset.x = cx - left;
+    offset.y = cy - top;
+    element.style.willChange = 'transform';
+  };
 
   return {
     moveableElement() {
@@ -25,19 +32,22 @@ function moveableMixin() {
       if (isDragging) {
         position.x = clientX - offset.x;
         position.y = clientY - offset.y;
-        element.style.top = `${position.y}px`;
-        element.style.left = `${position.x}px`;
+        element.style.transform =
+          `translate3d(${position.x}px, ${position.y}px, 0)`;
       }
     },
 
     onMouseup() {
       isDragging = false;
       this.trigger(MOVE_END, position);
+      element.style.willChange = 'auto';
     },
 
     onMousedown({ clientX, clientY }) {
-      offset.x = clientX - element.offsetLeft;
-      offset.y = clientY - element.offsetTop;
+      const { left, top } = element.getBoundingClientRect();
+      offset.x = clientX - left;
+      offset.y = clientY - top;
+      element.style.willChange = 'transform';
       isDragging = true;
       this.trigger(MOVE_START);
     },
