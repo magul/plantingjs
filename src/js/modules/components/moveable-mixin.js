@@ -1,12 +1,11 @@
 export const MOVE_END = 'moveend';
-export const MOVE_START = 'movestart';
 const PREVENT_SELECT_CLASS = 'noselect';
 
 function moveableMixin() {
   let isDragging = false;
   let element;
   const offset = {};
-  const position = { x: 0, y: 0 };
+  const position = {};
 
   return {
     moveableElement() {
@@ -14,14 +13,14 @@ function moveableMixin() {
       element.classList.add(PREVENT_SELECT_CLASS);
       this.events = {
         ...this.events,
-        mousedown: 'onMousedown',
-        mouseup: 'onMouseup',
-        mousemove: 'onMousemove',
+        mousedown: 'onMouseDown',
+        mouseup: 'onMouseUp',
+        mousemove: 'onMouseMove',
       };
       this.delegateEvents();
     },
 
-    onMousemove({ clientX, clientY }) {
+    onMouseMove({ clientX, clientY }) {
       if (isDragging) {
         position.x = clientX - offset.x;
         position.y = clientY - offset.y;
@@ -30,19 +29,18 @@ function moveableMixin() {
       }
     },
 
-    onMouseup() {
+    onMouseUp() {
       isDragging = false;
       this.trigger(MOVE_END, position);
       element.style.willChange = 'auto';
     },
 
-    onMousedown({ clientX, clientY }) {
+    onMouseDown({ clientX, clientY }) {
       const { left, top } = element.getBoundingClientRect();
       offset.x = clientX - left;
       offset.y = clientY - top;
       element.style.willChange = 'transform';
       isDragging = true;
-      this.trigger(MOVE_START);
     },
   };
 }

@@ -27,17 +27,17 @@ describe('Moveable mixin', () => {
   afterEach(cleanup);
 
   it('Should listen to mouse events', () => {
-    const onMousedown = sinon.spy(instance, 'onMousedown');
-    const onMouseup = sinon.spy(instance, 'onMouseup');
-    const onMousemove = sinon.spy(instance, 'onMousemove');
+    const onMouseDown = sinon.spy(instance, 'onMouseDown');
+    const onMouseUp = sinon.spy(instance, 'onMouseUp');
+    const onMouseMove = sinon.spy(instance, 'onMouseMove');
 
     instance.moveableElement();
     instance.el.dispatchEvent(createMouseEvent({ type: 'mousedown' }));
-    equal(onMousedown.called, true);
+    equal(onMouseDown.called, true);
     instance.el.dispatchEvent(createMouseEvent({ type: 'mouseup' }));
-    equal(onMouseup.called, true);
+    equal(onMouseUp.called, true);
     instance.el.dispatchEvent(createMouseEvent({ type: 'mousemove' }));
-    equal(onMousemove.called, true);
+    equal(onMouseMove.called, true);
   });
 
   it('Should move element after sequence of mousedown and mousemove events',
@@ -46,6 +46,7 @@ describe('Moveable mixin', () => {
 
       instance.moveableElement();
       instance.on('moveend', spy);
+      equal(spy.called, false);
       instance.el.dispatchEvent(createMouseEvent({ type: 'mousedown' }));
       instance.el.dispatchEvent(createMouseEvent({
         type: 'mousemove',

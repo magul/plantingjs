@@ -5,7 +5,7 @@ import Const from '../../const';
 import moveableMixin, { MOVE_END } from '../components/moveable-mixin';
 
 const ObjectView = View.extend({
-  className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',
+  className: 'plantingjs-plantedobject-container',
   template: require('./object.hbs'),
   events: {
     'mouseover': 'setUserActivity',
