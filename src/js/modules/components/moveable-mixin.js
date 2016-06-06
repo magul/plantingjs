@@ -1,48 +1,36 @@
 export const MOVE_END = 'moveend';
 const PREVENT_SELECT_CLASS = 'noselect';
 
-function moveableMixin() {
+export default function(view) {
   let isDragging = false;
-  let element;
   const offset = {};
   const position = {};
 
-  return {
-    moveableElement() {
-      element = this.el;
-      element.classList.add(PREVENT_SELECT_CLASS);
-      this.events = {
-        ...this.events,
-        mousedown: 'onMouseDown',
-        mouseup: 'onMouseUp',
-        mousemove: 'onMouseMove',
-      };
-      this.delegateEvents();
-    },
+  function onMouseDown({ clientX, clientY }) {
+    const { left, top } = view.el.getBoundingClientRect();
+    offset.x = clientX - left;
+    offset.y = clientY - top;
+    view.el.style.willChange = 'transform';
+    isDragging = true;
+  }
 
-    onMouseMove({ clientX, clientY }) {
-      if (isDragging) {
-        position.x = clientX - offset.x;
-        position.y = clientY - offset.y;
-        element.style.transform =
-          `translate3d(${position.x}px, ${position.y}px, 0)`;
-      }
-    },
+  function onMouseUp() {
+    isDragging = false;
+    view.el.style.willChange = 'auto';
+    view.trigger(MOVE_END, position);
+  }
 
-    onMouseUp() {
-      isDragging = false;
-      this.trigger(MOVE_END, position);
-      element.style.willChange = 'auto';
-    },
+  function onMouseMove({ clientX, clientY }) {
+    if (isDragging) {
+      position.x = clientX - offset.x;
+      position.y = clientY - offset.y;
+      view.el.style.transform =
+        `translate3d(${position.x}px, ${position.y}px, 0)`;
+    }
+  }
 
-    onMouseDown({ clientX, clientY }) {
-      const { left, top } = element.getBoundingClientRect();
-      offset.x = clientX - left;
-      offset.y = clientY - top;
-      element.style.willChange = 'transform';
-      isDragging = true;
-    },
-  };
+  view.delegate('mousedown', null, onMouseDown);
+  view.delegate('mouseup', null, onMouseUp);
+  view.delegate('mousemove', null, onMouseMove);
+  view.el.classList.add(PREVENT_SELECT_CLASS);
 }
-
-export default moveableMixin;

@@ -2,7 +2,7 @@ import lodash from 'lodash';
 import { View } from '../../core';
 import PlantViewTools from '../plant/tools';
 import Const from '../../const';
-import moveableMixin, { MOVE_END } from '../components/moveable-mixin';
+import moveableMixin, { test, MOVE_END } from '../components/moveable-mixin';
 
 const ObjectView = View.extend({
   className: 'plantingjs-plantedobject-container',
@@ -37,7 +37,7 @@ const ObjectView = View.extend({
       .on('change:layerIndex', this.setLayer, this);
 
     if (this.app.getState() !== Const.State.VIEWER) {
-      this.moveableElement();
+      moveableMixin(this);
       this.on(MOVE_END, this.model.set, this.model);
     }
   },
@@ -83,7 +83,5 @@ const ObjectView = View.extend({
     this.model.set('userActivity', false);
   },
 });
-
-lodash.extend(ObjectView.prototype, moveableMixin());
 
 export default ObjectView;
