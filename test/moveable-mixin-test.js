@@ -1,59 +1,56 @@
 /* global describe,beforeEach,afterEach,before,it:false */
 import environment from './env/client';
 import { createMouseEvent } from './utils/events';
-import moveableMixin from '../src/js/modules/components/moveable-mixin';
+import moveableComponent from '../src/js/modules/components/moveable';
 import Backbone from 'backbone';
 import sinon from 'sinon';
 import { equal } from 'assert';
 
-describe('Moveable mixin', () => {
-  let instance;
-  const ViewClass = Backbone.View.extend(moveableMixin());
+describe('Moveable component', () => {
+  let viewInstance;
+  let document;
 
   function preparation() {
-    instance = new ViewClass();
-    instance.el.getBoundingClientRect = () => ({
+    viewInstance = new Backbone.View();
+    viewInstance.el.getBoundingClientRect = () => ({
       left: 50,
       top: 50,
     });
   }
 
   function cleanup() {
-    instance.remove();
+    viewInstance.remove();
   }
 
-  before(cb => environment.then(() => { cb(); }));
+  before(cb => environment.then((w) => {
+    document = w.document;
+    cb();
+  }));
   beforeEach(preparation);
   afterEach(cleanup);
 
-  it('Should listen to mouse events', () => {
-    const onMouseDown = sinon.spy(instance, 'onMouseDown');
-    const onMouseUp = sinon.spy(instance, 'onMouseUp');
-    const onMouseMove = sinon.spy(instance, 'onMouseMove');
-
-    instance.moveableElement();
-    instance.el.dispatchEvent(createMouseEvent({ type: 'mousedown' }));
-    equal(onMouseDown.called, true);
-    instance.el.dispatchEvent(createMouseEvent({ type: 'mouseup' }));
-    equal(onMouseUp.called, true);
-    instance.el.dispatchEvent(createMouseEvent({ type: 'mousemove' }));
-    equal(onMouseMove.called, true);
+  it('Should listen to mousedown event', () => {
+    sinon.spy(viewInstance, 'delegate');
+    moveableComponent({ view: viewInstance });
+    equal(
+      viewInstance.delegate
+        .calledWith('mousedown', null, sinon.match.func), true);
   });
 
   it('Should move element after sequence of mousedown and mousemove events',
     () => {
       const spy = sinon.spy();
 
-      instance.moveableElement();
-      instance.on('moveend', spy);
+      moveableComponent({ view: viewInstance });
+      viewInstance.on('moveend', spy);
       equal(spy.called, false);
-      instance.el.dispatchEvent(createMouseEvent({ type: 'mousedown' }));
-      instance.el.dispatchEvent(createMouseEvent({
+      viewInstance.el.dispatchEvent(createMouseEvent({ type: 'mousedown' }));
+      document.dispatchEvent(createMouseEvent({
         type: 'mousemove',
         clientX: 100,
         clientY: 100,
       }));
-      instance.el.dispatchEvent(createMouseEvent({ type: 'mouseup' }));
+      document.dispatchEvent(createMouseEvent({ type: 'mouseup' }));
       equal(spy.calledWithExactly({ x: 150, y: 150 }), true);
     });
 });
