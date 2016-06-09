@@ -1,7 +1,7 @@
 /* global describe,beforeEach,afterEach,before,it:false */
 import environment from './env/client';
 import { createMouseEvent } from './utils/events';
-import moveableComponent from '../src/js/modules/components/moveable';
+import { moveableComponent } from '../src/js/modules/components/moveable';
 import Backbone from 'backbone';
 import sinon from 'sinon';
 import { equal } from 'assert';

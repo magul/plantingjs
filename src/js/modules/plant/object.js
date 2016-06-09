@@ -2,9 +2,9 @@ import lodash from 'lodash';
 import { View } from '../../core';
 import PlantViewTools from '../plant/tools';
 import Const from '../../const';
-import moveableComponent, { MOVE_END } from '../components/moveable';
+import { moveableComponent, MOVE_END } from '../components/moveable';
 
-const ObjectView = View.extend({
+export default View.extend({
   className: 'plantingjs-plantedobject-container',
   template: require('./object.hbs'),
   events: {
@@ -83,5 +83,3 @@ const ObjectView = View.extend({
     this.model.set('userActivity', false);
   },
 });
-
-export default ObjectView;

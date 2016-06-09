@@ -1,7 +1,7 @@
 export const MOVE_END = 'moveend';
 const PREVENT_SELECT_CLASS = 'noselect';
 
-export default function({ view }) {
+export function moveableComponent({ view }) {
   const offset = {};
   const position = {};
 
