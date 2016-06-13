@@ -41,7 +41,13 @@ export default View.extend({
       .on('change:layerIndex', this.setLayer, this);
 
     if (!isViewerMode) {
-      this.on(MOVE_END, this.model.set, this.model);
+      this.on(MOVE_END, ({ x, y }) => {
+        this.model.setPosX({ x, width: this.overlay.width() });
+        this.model.setPosY({ y,
+          width: this.overlay.width(),
+          height: this.overlay.height() });
+        console.log(this.model.attributes);
+      });
     }
   },
 
