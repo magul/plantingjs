@@ -46,7 +46,6 @@ export default View.extend({
         this.model.setPosY({ y,
           width: this.overlay.width(),
           height: this.overlay.height() });
-        console.log(this.model.attributes);
       });
     }
   },
