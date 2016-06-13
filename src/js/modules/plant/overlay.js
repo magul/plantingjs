@@ -69,17 +69,14 @@ export default View.extend({
       const $img = $container.children('img');
       const height = $img.height();
       const width = $img.width();
-      const pos = $container.position();
-      let top = pos.top;
-      const left = pos.left * scale;
+      const pos = object.moveable.getPosition();
+      let top = pos.y;
+      const left = pos.x * scale;
 
       top = newH / 2 + (top - oldH / 2) * scale;
       $img.height(height * scale);
       $img.width(width * scale);
-      $container.css({
-        top: top,
-        left: left,
-      });
+      object.moveable.moveTo({ x: left, y: top});
     });
     this._width = newW;
     this._height = newH;

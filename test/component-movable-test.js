@@ -22,6 +22,16 @@ describe('Moveable component', () => {
     viewInstance.remove();
   }
 
+  function mouseMoveTo(x, y) {
+    viewInstance.el.dispatchEvent(createMouseEvent({ type: 'mousedown' }));
+    document.dispatchEvent(createMouseEvent({
+      type: 'mousemove',
+      clientX: x,
+      clientY: y,
+    }));
+    document.dispatchEvent(createMouseEvent({ type: 'mouseup' }));
+  }
+
   before(cb => environment.then((w) => {
     document = w.document;
     cb();
@@ -44,13 +54,30 @@ describe('Moveable component', () => {
       moveableComponent({ view: viewInstance });
       viewInstance.on('moveend', spy);
       equal(spy.called, false);
-      viewInstance.el.dispatchEvent(createMouseEvent({ type: 'mousedown' }));
-      document.dispatchEvent(createMouseEvent({
-        type: 'mousemove',
-        clientX: 100,
-        clientY: 100,
-      }));
-      document.dispatchEvent(createMouseEvent({ type: 'mouseup' }));
+      mouseMoveTo(100, 100);
       equal(spy.calledWithExactly({ x: 150, y: 150 }), true);
     });
+
+  describe('API', () => {
+    it('Should return actual position of the element', () => {
+      const api = moveableComponent({ view: viewInstance });
+
+      equal(api.getPosition().x, 0);
+      equal(api.getPosition().y, 0);
+      mouseMoveTo(100, 100);
+      equal(api.getPosition().x, 150);
+      equal(api.getPosition().y, 150);
+    });
+
+    it('Should set position to given coordinates', () => {
+      const api = moveableComponent({ view: viewInstance });
+
+      equal(api.getPosition().x, 0);
+      equal(api.getPosition().y, 0);
+      api.moveTo({ x: 150, y: 150 });
+      equal(api.getPosition().x, 150);
+      equal(api.getPosition().y, 150);
+      equal(viewInstance.el.style.transform, 'translate3d(150px, 150px, 0)');
+    });
+  });
 });
