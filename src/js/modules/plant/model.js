@@ -13,7 +13,10 @@ export default Model.extend({
   },
 
   getProjection() {
-    return this.get('projections')[this.get('projection')];
+    return this.manifesto()
+      .getProjectionsFor(this.get('objectId'))[
+        this.get('currentProjection') || this.get('projection') || 0
+      ];
   },
 
   setProjection(at_) {

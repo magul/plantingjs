@@ -15,8 +15,10 @@ export default View.extend({
   $img: null,
 
   initialize: function(options) {
+    const isViewerMode = this.app.getState() === Const.State.VIEWER;
+
     this.overlay = options.overlay;
-    this.moveable = moveableComponent({ view: this });
+    this.moveable = moveableComponent({ view: this, staticMode: isViewerMode });
     this.listenTo(this.model, 'change:scale', this.resize);
     this.render();
     this.$img
@@ -38,7 +40,7 @@ export default View.extend({
       .on('change:currentProjection', this.updateProjection, this)
       .on('change:layerIndex', this.setLayer, this);
 
-    if (this.app.getState() !== Const.State.VIEWER) {
+    if (!isViewerMode) {
       this.on(MOVE_END, this.model.set, this.model);
     }
   },
