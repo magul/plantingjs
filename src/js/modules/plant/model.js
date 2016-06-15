@@ -1,4 +1,5 @@
 import { Model } from '../../core';
+import { Model as BModel } from 'backbone';
 
 export default Model.extend({
   defaults: {
@@ -10,6 +11,15 @@ export default Model.extend({
     width: 0,
     height: 0,
     userActivity: false,
+  },
+  container: undefined,
+
+  constructor({ containerWidth, containerHeight, ...props }, options) {
+    this.container = new BModel({
+      width: containerWidth,
+      height: containerHeight });
+
+    return Model.call(this, props, options);
   },
 
   getProjection() {
@@ -26,7 +36,12 @@ export default Model.extend({
     this.set('projection', at);
   },
 
-  setPosition({ x, y, width, height }) {
+  setContainerSize({ width, height }) {
+    this.container.set({ width, height });
+  },
+
+  setPosition({ x, y }) {
+    const { width, height } = this.container.attributes;
     const props = {
       x: x / width,
       y: (y - (height / 2)) / width,
@@ -35,7 +50,9 @@ export default Model.extend({
     this.set(props);
   },
 
-  getPosition({ width, height }) {
+  getPosition() {
+    const { width, height } = this.container.attributes;
+
     return {
       x: width * this.get('x'),
       y: height / 2 + this.get('y') * width,

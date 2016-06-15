@@ -76,6 +76,7 @@ export default View.extend({
       top = newH / 2 + (top - oldH / 2) * scale;
       $img.height(height * scale);
       $img.width(width * scale);
+      object.model.setContainerSize({ width: newW, height: newH });
       object.moveable.moveTo({ x: left, y: top});
     });
     this._width = newW;
@@ -87,6 +88,8 @@ export default View.extend({
     const newModel = lodash.extend(model, {
       x: ui.position.left / this.width(),
       y: (ui.position.top - (this.height() / 2)) / this.width(),
+      containerWidth: this.width(),
+      containerHeight: this.height(),
     });
 
     this.collection.add(newModel, {

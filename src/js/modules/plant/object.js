@@ -11,8 +11,8 @@ export default View.extend({
     'mouseover': 'setUserActivity',
     'mouseleave': 'unsetUserActivity',
   },
-  moveable: null,
-  $img: null,
+  moveable: undefined,
+  $img: undefined,
 
   initialize: function(options) {
     const isViewerMode = this.app.getState() === Const.State.VIEWER;
@@ -41,20 +41,12 @@ export default View.extend({
       .on('change:layerIndex', this.setLayer, this);
 
     if (!isViewerMode) {
-      this.on(MOVE_END, ({ x, y }) => {
-        this.model.setPosition({ x, y,
-          width: this.overlay.width(),
-          height: this.overlay.height(),
-        });
-      });
+      this.on(MOVE_END, this.model.setPosition, this.model);
     }
   },
 
   render: function() {
-    const { x, y } = this.model.getPosition({
-      width: this.overlay.width(),
-      height: this.overlay.height(),
-    });
+    const { x, y } = this.model.getPosition();
 
     this.$el
       .html(this.template({
