@@ -26,23 +26,19 @@ export default Model.extend({
     this.set('projection', at);
   },
 
-  setPosX({ x, width }) {
-    this.set('x', x / width);
+  setPosition({ x, y, width, height }) {
+    const props = {
+      x: x / width,
+      y: (y - (height / 2)) / width,
+    };
 
-    return this;
+    this.set(props);
   },
 
-  getPosX({ width }) {
-    return width * this.get('x');
-  },
-
-  setPosY({ y, height, width }) {
-    this.set('y', (y - (height / 2)) / width );
-
-    return this;
-  },
-
-  getPosY({ width, height }) {
-    return height / 2 + this.get('y') * width;
+  getPosition({ width, height }) {
+    return {
+      x: width * this.get('x'),
+      y: height / 2 + this.get('y') * width,
+    };
   },
 });

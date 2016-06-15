@@ -42,19 +42,19 @@ export default View.extend({
 
     if (!isViewerMode) {
       this.on(MOVE_END, ({ x, y }) => {
-        this.model.setPosX({ x, width: this.overlay.width() });
-        this.model.setPosY({ y,
+        this.model.setPosition({ x, y,
           width: this.overlay.width(),
-          height: this.overlay.height() });
+          height: this.overlay.height(),
+        });
       });
     }
   },
 
   render: function() {
-    const x = this.model.getPosX({ width: this.overlay.width() });
-    const y = this.model.getPosY({
+    const { x, y } = this.model.getPosition({
       width: this.overlay.width(),
-      height: this.overlay.height() });
+      height: this.overlay.height(),
+    });
 
     this.$el
       .html(this.template({
