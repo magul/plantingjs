@@ -38,6 +38,7 @@ export default View.extend({
   },
 
   addObject: function(model) {
+    model.setContainerSize({ width: this._width, height: this._height });
     const newObject = new PlantViewObject({
       model: model,
       app: this.app,
