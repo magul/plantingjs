@@ -77,5 +77,5 @@
     "jquery": "./node_modules/jquery/dist/jquery.js",
     "jquery-ui": "./src/vendor/jquery-ui.js"
   },
-  "browserify-shim": "./browserify.shim.js",
+  "browserify-shim": "./browserify.shim.js"
 }
