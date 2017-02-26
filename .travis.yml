@@ -1,11 +1,15 @@
 language: node_js
 node_js:
-  - "4.2.4"
+- node
 install:
-  - "npm install"
+- npm install
 script:
-  - "npm run build"
-  - "npm run lint"
-  - "npm run test"
+- npm run build
+- npm run lint
+- npm run test
+- if [ "$TRAVIS_BRANCH" == "master" ]; then bash travis_deploy.sh; fi
 after_success:
-  - "npm run codecov"
+- npm run codecov
+env:
+  global:
+  - GH_REF: komitywa/plantingjs.git
