@@ -1,15 +1,26 @@
 export const MOVE_END = 'moveend';
 const PREVENT_SELECT_CLASS = 'noselect';
 
-export function moveableComponent({ view }) {
+export function moveableComponent({ view, staticMode = false }) {
   const offset = {};
-  const position = {};
+  const position = { x: 0, y: 0 };
+
+  view.el.classList.add(PREVENT_SELECT_CLASS);
+
+  function moveTo({ x, y }) {
+    position.x = x;
+    position.y = y;
+    view.el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  }
+
+  function getPosition() {
+    return position;
+  }
 
   function onMouseMove({ clientX, clientY }) {
-    position.x = clientX - offset.x;
-    position.y = clientY - offset.y;
-    view.el.style.transform =
-      `translate3d(${position.x}px, ${position.y}px, 0)`;
+    moveTo({
+      x: clientX - offset.x,
+      y: clientY - offset.y });
   }
 
   function onMouseUp() {
@@ -26,6 +37,9 @@ export function moveableComponent({ view }) {
     document.addEventListener('mouseup', onMouseUp, false);
   }
 
-  view.delegate('mousedown', null, onMouseDown);
-  view.el.classList.add(PREVENT_SELECT_CLASS);
+  if (!staticMode) {
+    view.delegate('mousedown', null, onMouseDown);
+  }
+
+  return Object.freeze({ moveTo, getPosition });
 }

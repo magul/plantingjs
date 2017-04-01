@@ -39,6 +39,7 @@ export default View.extend({
   },
 
   addObject: function(model) {
+    model.setContainerSize({ width: this._width, height: this._height });
     const newObject = new PlantViewObject({
       model: model,
       app: this.app,
@@ -70,17 +71,15 @@ export default View.extend({
       const $img = $container.children('img');
       const height = $img.height();
       const width = $img.width();
-      const pos = $container.position();
-      let top = pos.top;
-      const left = pos.left * scale;
+      const pos = object.moveable.getPosition();
+      let top = pos.y;
+      const left = pos.x * scale;
 
       top = newH / 2 + (top - oldH / 2) * scale;
       $img.height(height * scale);
       $img.width(width * scale);
-      $container.css({
-        top: top,
-        left: left,
-      });
+      object.model.setContainerSize({ width: newW, height: newH });
+      object.moveable.moveTo({ x: left, y: top});
     });
     this._width = newW;
     this._height = newH;
@@ -91,6 +90,8 @@ export default View.extend({
     const newModel = extend(model, {
       x: ui.position.left / this.width(),
       y: (ui.position.top - (this.height() / 2)) / this.width(),
+      containerWidth: this.width(),
+      containerHeight: this.height(),
     });
 
     this.collection.add(newModel, {

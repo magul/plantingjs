@@ -11,10 +11,14 @@ export default View.extend({
     'mouseover': 'setUserActivity',
     'mouseleave': 'unsetUserActivity',
   },
-  $img: null,
+  moveable: undefined,
+  $img: undefined,
 
   initialize: function(options) {
+    const isViewerMode = this.app.getState() === Const.State.VIEWER;
+
     this.overlay = options.overlay;
+    this.moveable = moveableComponent({ view: this, staticMode: isViewerMode });
     this.listenTo(this.model, 'change:scale', this.resize);
     this.render();
     this.$img
@@ -36,26 +40,21 @@ export default View.extend({
       .on('change:currentProjection', this.updateProjection, this)
       .on('change:layerIndex', this.setLayer, this);
 
-    if (this.app.getState() !== Const.State.VIEWER) {
-      moveableComponent({ view: this });
-      this.on(MOVE_END, this.model.set, this.model);
+    if (!isViewerMode) {
+      this.on(MOVE_END, this.model.setPosition, this.model);
     }
   },
 
   render: function() {
-    const x = this.overlay.width() * this.model.get('x');
-    const y = this.overlay.height() / 2 + this.model.get('y') * this.overlay.width();
+    const { x, y } = this.model.getPosition();
 
     this.$el
       .html(this.template({
         projectionUrl: this.model.getProjection(),
       }))
       .attr('data-cid', this.model.cid)
-      .css({
-        zIndex: this.model.get('layerIndex'),
-        transform: `translate3d(${x}px, ${y}px, 0)`,
-      });
-
+      .css('zIndex', this.model.get('layerIndex'));
+    this.moveable.moveTo({ x, y });
     this.$img = this.$el.children('img');
 
     return this;
